@@ -1,0 +1,6 @@
+{
+  "name": "indic.top",
+  "description": "Multi-script phonetic offline transliteration utility with a visual keyboard and study tables for multiple Indic languages.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
