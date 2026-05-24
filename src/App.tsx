@@ -461,8 +461,8 @@ export default function App() {
         </div>
 
         {/* Dynamic Global Tab Nav */}
-        <div className="border-t border-slate-100 bg-slate-50/50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="border-t border-slate-100 bg-slate-50/50 overflow-x-auto scrollbar-none">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 min-w-max">
             <nav className="flex space-x-1 py-1 px-1">
               {[
                 { id: "playground", label: "Type & Transliterate", icon: Keyboard },
@@ -580,7 +580,7 @@ export default function App() {
             </span>
           </div>
 
-          <div className="relative z-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 font-sans">
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-4 font-sans">
             {Object.values(LANGUAGE_MAPPINGS).map((lang) => {
               const isSelected = selectedLang === lang.id;
               const styles = LANG_COLOR_MAP[lang.id] || LANG_COLOR_MAP.hindi;
@@ -593,7 +593,7 @@ export default function App() {
                     setSelectedLang(lang.id);
                     setInputText(lang.exampleEnglish);
                   }}
-                  className={`group flex flex-col justify-between p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer min-h-[190px] relative overflow-hidden text-left focus:outline-hidden ${
+                  className={`group flex flex-col justify-between p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer min-h-[160px] sm:min-h-[190px] relative overflow-hidden text-left focus:outline-hidden ${
                     isSelected
                       ? `${styles.bgActiveCard} border-2 ${styles.borderActiveCard} shadow-2xl ring-4 ${styles.ringActiveCard} scale-102`
                       : `bg-[#191a1e]/90 hover:bg-[#121316] border border-white/10 shadow-lg hover:border-indigo-500/40`
@@ -1550,14 +1550,14 @@ export default function App() {
         : activeMapping.matras;
 
     return (
-      <div className="bg-slate-50 min-h-screen p-1 sm:p-4 flex flex-col gap-6">
+      <div className="w-full flex flex-col gap-6">
         {/* Live Workspace Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           
           {/* Input Panel with Soft Typing Keyboard Helper */}
-          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col justify-between">
+          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs flex flex-col justify-between">
             <div className="flex flex-col gap-4">
-              <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-100">
                 <div className="flex items-center gap-2">
                   <Keyboard className="w-5 h-5 text-indigo-600 animate-pulse" />
                   <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest font-mono">
@@ -1610,11 +1610,11 @@ export default function App() {
                 <div className="flex flex-col gap-3">
                   
                   {/* Keyboard Language Selector Tab Bar */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 bg-slate-100 p-1.5 rounded-xl">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-100 p-1.5 rounded-xl">
                     <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-2">
                       Soft Keypad Script:
                     </span>
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-1 justify-end">
                       {languages.map((l) => {
                         const isKeyboardSelected = indicKeyboardLang === l.id;
                         const kbdStyles = LANG_COLOR_MAP[l.id] || LANG_COLOR_MAP.hindi;
@@ -1666,7 +1666,22 @@ export default function App() {
                                 : "text-slate-500 hover:text-slate-800"
                             }`}
                           >
-                            {tab === "vowels" ? "Vowels (Swar)" : tab === "consonants" ? "Consonants (Vyanjan)" : "Matras (Swar Chinha)"}
+                            {tab === "vowels" ? (
+                              <>
+                                <span className="hidden sm:inline">Vowels (Swar)</span>
+                                <span className="sm:hidden">Vowels</span>
+                              </>
+                            ) : tab === "consonants" ? (
+                              <>
+                                <span className="hidden sm:inline">Consonants (Vyanjan)</span>
+                                <span className="sm:hidden">Consonants</span>
+                              </>
+                            ) : (
+                              <>
+                                <span className="hidden sm:inline">Matras (Swar Chinha)</span>
+                                <span className="sm:hidden">Matras</span>
+                              </>
+                            )}
                           </button>
                         );
                       })}
@@ -1805,9 +1820,9 @@ export default function App() {
           </div>
 
           {/* Output Panel */}
-          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col justify-between">
+          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs flex flex-col justify-between">
             <div className="flex flex-col gap-4">
-              <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-100">
                 <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest font-mono">
                   2. Transliterated Target Result
                 </h3>
@@ -1924,7 +1939,22 @@ export default function App() {
                       : "text-slate-500 hover:text-slate-800"
                   }`}
                 >
-                  {cat === "vowels" ? "Vowels (Swar)" : cat === "consonants" ? "Consonants (Vyanjan)" : "Matras (Diacritics)"}
+                  {cat === "vowels" ? (
+                    <>
+                      <span className="hidden sm:inline">Vowels (Swar)</span>
+                      <span className="sm:hidden">Vowels</span>
+                    </>
+                  ) : cat === "consonants" ? (
+                    <>
+                      <span className="hidden sm:inline">Consonants (Vyanjan)</span>
+                      <span className="sm:hidden">Consonants</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="hidden sm:inline">Matras (Diacritics)</span>
+                      <span className="sm:hidden">Matras</span>
+                    </>
+                  )}
                 </button>
               ))}
             </div>

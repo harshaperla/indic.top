@@ -325,8 +325,9 @@ export const LANGUAGE_MAPPINGS: Record<string, ScriptMapping> = {
       { key: "y", char: "য" },
       { key: "r", char: "র" },
       { key: "l", char: "ল" },
-      { key: "v", char: "ভ" },
+      { key: "v", char: "ব" },
       { key: "w", char: "ব" },
+      { key: "L", char: "ল" },
       { key: "sh", char: "শ" },
       { key: "Sh", char: "ষ" },
       { key: "s", char: "স" },
@@ -750,6 +751,55 @@ export function transliterateIndicToIndic(text: string, srcLangId: string, destL
         // Labials
         if (offset === 0x2A || offset === 0x2B || offset === 0x2C) {
           result += String.fromCharCode(destBase + 0x29);
+          continue;
+        }
+      }
+
+      // Bengali script-specific exceptions to map unassigned/unsupported characters
+      if (destLangId === "bengali") {
+        // short e (vowel U+xx0E) -> long e (U+xx0F)
+        if (offset === 0x0E) {
+          result += String.fromCharCode(destBase + 0x0F);
+          continue;
+        }
+        // short o (vowel U+xx12) -> long o (U+xx13)
+        if (offset === 0x12) {
+          result += String.fromCharCode(destBase + 0x13);
+          continue;
+        }
+        // short e matra (U+xx46) -> long e matra (U+xx47)
+        if (offset === 0x46) {
+          result += String.fromCharCode(destBase + 0x47);
+          continue;
+        }
+        // short o matra (U+xx4A) -> long o matra (U+xx4B)
+        if (offset === 0x4A) {
+          result += String.fromCharCode(destBase + 0x4B);
+          continue;
+        }
+        // Tamil alveolar nasal ன (U+xx29) -> dental nasal ন (U+xx28)
+        if (offset === 0x29) {
+          result += String.fromCharCode(destBase + 0x28);
+          continue;
+        }
+        // Tamil RRa ற (U+xx31) -> dental/alveolar ra র (U+xx30)
+        if (offset === 0x31) {
+          result += String.fromCharCode(destBase + 0x30);
+          continue;
+        }
+        // Retroflex LLA ಳ/ళ/ળ/ள (U+xx33) -> standard lateral l ল (U+xx32)
+        if (offset === 0x33) {
+          result += String.fromCharCode(destBase + 0x32);
+          continue;
+        }
+        // Tamil retroflex approximant zha ழ/ഴ (U+xx34) -> standard lateral l ল (U+xx32)
+        if (offset === 0x34) {
+          result += String.fromCharCode(destBase + 0x32);
+          continue;
+        }
+        // Semivowel va വ/ವ/వ/व (U+xx35) -> standard Bengali ba ব (U+xx2C)
+        if (offset === 0x35) {
+          result += String.fromCharCode(destBase + 0x2C);
           continue;
         }
       }
